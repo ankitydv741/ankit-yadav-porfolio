@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Ankit Yadav &mdash; Software Developer</title>
+
+  <!-- Typography: Plus Jakarta Sans, Instrument Serif, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          screens: {
+            'xs': '420px',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Instrument Serif"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            surface: {
+              DEFAULT: '#090a0c',
+              subtle: '#111318',
+              card: '#15171d',
+              border: 'rgba(255, 255, 255, 0.08)',
+              borderHover: 'rgba(255, 255, 255, 0.20)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
+    body {
+      background-color: #090a0c;
+      color: #e4e4e7;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Minimal trailing cursor for pointer devices */
+    .custom-cursor {
+      width: 10px;
+      height: 10px;
+      background: #ffffff;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.18s cubic-bezier(0.16, 1, 0.3, 1), height 0.18s cubic-bezier(0.16, 1, 0.3, 1), background 0.18s;
+    }
+
+    .cursor-hover .custom-cursor {
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(2px);
+    }
+
+    /* Infinite Marquee Right to Left */
+    .marquee-container {
+      display: flex;
+      overflow: hidden;
+      user-select: none;
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    }
+
+    .marquee-content {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 100%;
+      animation: marqueeScroll 26s linear infinite;
+    }
+
+    @media (min-width: 640px) {
+      .marquee-content {
+        gap: 1rem;
+      }
+    }
+
+    .marquee-container:hover .marquee-content {
+      animation-play-state: paused;
+    }
+
+    @keyframes marqueeScroll {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(calc(-100% - 0.75rem));
+      }
+    }
+
+    @media (min-width: 640px) {
+      @keyframes marqueeScroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(calc(-100% - 1rem));
+        }
+      }
+    }
+
+    /* Architectural grid background */
+    .grid-bg {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+
+    /* Disable custom cursor on mobile touchscreens */
+    @media (pointer: coarse) {
+      .custom-cursor {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="relative selection:bg-zinc-800 selection:text-white">
+
+  <!-- Interactive cursor for desktops -->
+  <div class="custom-cursor" id="cursor"></div>
+
+  <!-- Background grid layer -->
+  <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#090a0c]/90 backdrop-blur-md border-b border-surface-border">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      
+      <!-- Brand Monogram -->
+      <a href="#hero" class="group flex items-center gap-2.5 interactive py-2">
+        <span class="w-8 h-8 rounded-lg bg-white text-black font-mono font-bold text-xs flex items-center justify-center transition-transform group-hover:scale-95 shadow-sm">
+          AY
+        </span>
+        <span class="font-sans font-semibold text-sm text-zinc-200 group-hover:text-white transition-colors">
+          Ankit Yadav
+        </span>
+      </a>
+
+      <!-- Desktop Navigation links -->
+      <nav class="hidden md:flex items-center gap-7 font-sans text-xs text-zinc-400">
+        <a href="#projects" class="hover:text-white transition-colors interactive py-1">Projects</a>
+        <a href="#skills" class="hover:text-white transition-colors interactive py-1">Skills</a>
+        <a href="#education" class="hover:text-white transition-colors interactive py-1">Education</a>
+        <a href="#socials" class="hover:text-white transition-colors interactive py-1">Connect</a>
+      </nav>
+
+      <!-- Desktop Location & CTA + Mobile Toggle Button -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="hidden sm:flex items-center gap-2 text-xs text-zinc-400 font-mono">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Jaipur, RJ</span>
+        </div>
+
+        <a href="#contact" id="getInTouchBtn" class="hidden sm:inline-flex interactive px-3 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-xs font-medium text-white transition-colors">
+          Get in Touch
+        </a>
+
+        <!-- Mobile Hamburger Button -->
+        <button 
+          id="mobileMenuToggle" 
+          aria-label="Toggle mobile menu"
+          class="md:hidden w-10 h-10 rounded-lg bg-surface-card border border-surface-border flex items-center justify-center text-zinc-300 hover:text-white active:scale-95 transition-all"
+        >
+          <i id="menuIcon" class="fa-solid fa-bars text-base"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Drawer / Dropdown Menu -->
+    <div 
+      id="mobileNavDrawer" 
+      class="hidden md:hidden border-b border-surface-border bg-[#090a0c]/98 backdrop-blur-xl px-5 pt-3 pb-6 transition-all duration-300"
+    >
+      <nav class="flex flex-col space-y-3 font-sans text-sm font-medium text-zinc-300">
+        <a href="#projects" class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-zinc-800/60 active:bg-zinc-800 flex items-center justify-between border-b border-surface-border/40">
+          <span>Projects</span>
+          <i class="fa-solid fa-chevron-right text-xs text-zinc-600"></i>
+        </a>
+        <a href="#skills" class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-zinc-800/60 active:bg-zinc-800 flex items-center justify-between border-b border-surface-border/40">
+          <span>Skills</span>
+          <i class="fa-solid fa-chevron-right text-xs text-zinc-600"></i>
+        </a>
+        <a href="#education" class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-zinc-800/60 active:bg-zinc-800 flex items-center justify-between border-b border-surface-border/40">
+          <span>Education</span>
+          <i class="fa-solid fa-chevron-right text-xs text-zinc-600"></i>
+        </a>
+        <a href="#achievements" class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-zinc-800/60 active:bg-zinc-800 flex items-center justify-between border-b border-surface-border/40">
+          <span>Achievements</span>
+          <i class="fa-solid fa-chevron-right text-xs text-zinc-600"></i>
+        </a>
+        <a href="#hobbies" class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-zinc-800/60 active:bg-zinc-800 flex items-center justify-between border-b border-surface-border/40">
+          <span>Hobbies &amp; Interests</span>
+          <i class="fa-solid fa-chevron-right text-xs text-zinc-600"></i>
+        </a>
+        <a href="#socials" class="mobile-nav-link py-2.5 px-3 rounded-lg hover:bg-zinc-800/60 active:bg-zinc-800 flex items-center justify-between border-b border-surface-border/40">
+          <span>Connect Online</span>
+          <i class="fa-solid fa-chevron-right text-xs text-zinc-600"></i>
+        </a>
+      </nav>
+
+      <div class="mt-4 pt-3 flex items-center justify-between text-xs font-mono text-zinc-400">
+        <span class="flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Jaipur, Rajasthan</span>
+        </span>
+        <a href="mailto:ankityadav06062004@gmail.com" class="text-zinc-200 underline">Email</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10">
+    <section id="hero" class="pt-24 sm:pt-32 md:pt-36 pb-10 sm:pb-14 px-4 sm:px-6 max-w-5xl mx-auto">
+      <div class="flex flex-col-reverse md:flex-row items-center md:items-center justify-between gap-8 sm:gap-10">
+        
+        <!-- Left: Intro & Headings -->
+        <div class="flex-1 space-y-5 sm:space-y-6 text-left w-full">
+          
+          <div class="space-y-2.5 sm:space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border hero-stagger">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span class="font-mono text-[11px] sm:text-xs text-zinc-400">B.Tech (Information Technology)</span>
+            </div>
+            
+            <h1 class="font-sans text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.05] hero-stagger">
+              Ankit Yadav
+            </h1>
+            
+            <div class="flex flex-wrap items-baseline gap-2 sm:gap-3 pt-1 hero-stagger">
+              <h2 class="font-serif italic text-2xl xs:text-3xl sm:text-3xl md:text-4xl text-zinc-300 font-normal">
+                Software Developer
+              </h2>
+              <span class="font-mono text-xs sm:text-sm text-zinc-500">/ Full Stack &amp; MERN</span>
+            </div>
+          </div>
+
+          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-xl hero-stagger">
+            <code class="font-mono text-xs sm:text-sm text-emerald-400 bg-surface-card px-2 py-0.5 rounded border border-surface-border">git commit -m &quot;Becoming a better developer every day&quot;</code><br><br>
+            Creating meaningful digital solutions through problem-solving and full-stack development.
+          </p>
+
+          <!-- Contact & Social Pills -->
+          <div class="pt-1 flex flex-wrap items-center gap-2 sm:gap-2.5 hero-stagger">
+            <a href="mailto:ankityadav06062004@gmail.com" class="interactive px-3 py-2 rounded-lg bg-white text-black font-medium text-xs hover:bg-zinc-200 active:scale-95 transition-all flex items-center gap-2 shadow-sm min-h-[38px]">
+              <i class="fa-solid fa-envelope text-[11px]"></i>
+              <span class="truncate max-w-[200px] xs:max-w-none">ankityadav06062004@gmail.com</span>
+            </a>
+
+            <a href="tel:+916367502730" class="interactive px-3 py-2 rounded-lg border border-surface-border hover:border-surface-borderHover text-zinc-300 hover:text-white font-mono text-xs active:scale-95 transition-all flex items-center gap-2 min-h-[38px]">
+              <i class="fa-solid fa-phone text-emerald-400 text-[11px]"></i>
+              <span>+91 6367502730</span>
+            </a>
+
+            <a href="https://www.linkedin.com/in/ankityadav664/" target="_blank" rel="noopener noreferrer" class="interactive px-3 py-2 rounded-lg border border-surface-border hover:border-surface-borderHover text-zinc-300 hover:text-white font-mono text-xs active:scale-95 transition-all flex items-center gap-1.5 min-h-[38px]">
+              <i class="fa-brands fa-linkedin text-blue-400"></i>
+              <span>LinkedIn</span>
+            </a>
+
+            <a href="https://github.com/ankitydv741" target="_blank" rel="noopener noreferrer" class="interactive px-3 py-2 rounded-lg border border-surface-border hover:border-surface-borderHover text-zinc-300 hover:text-white font-mono text-xs active:scale-95 transition-all flex items-center gap-1.5 min-h-[38px]">
+              <i class="fa-brands fa-github text-white"></i>
+              <span>GitHub</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Right: Editorial Portrait Box -->
+        <div class="w-full sm:w-auto flex justify-center md:justify-end hero-stagger">
+          <div class="relative group mx-auto md:mx-0">
+            
+            <!-- Ambient Dynamic Glow Halo (lights up on hover) -->
+            <div class="absolute -inset-2 rounded-3xl bg-gradient-to-tr from-emerald-500/20 via-cyan-500/20 to-emerald-400/30 opacity-40 sm:opacity-0 blur-xl group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+
+            <div class="relative w-44 h-44 xs:w-48 xs:h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border border-surface-border bg-surface-card shadow-2xl transition-all duration-500 group-hover:border-emerald-400/50 group-hover:shadow-[0_0_30px_rgba(16,185,129,0.22)]">
+              <!-- Developer Portrait with local file first, then reliable web portrait fallback -->
+              <img 
+                id="profilePhoto"
+                src="pp.jpeg" 
+                alt="Ankit Yadav" 
+                class="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                loading="eager"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80';"
+              >
+              
+              <div class="absolute inset-0 bg-gradient-to-t from-[#090a0c]/85 via-transparent to-transparent pointer-events-none"></div>
+              
+              <!-- Tag inside photo -->
+              <div class="absolute bottom-2.5 sm:bottom-3 left-2.5 sm:left-3 right-2.5 sm:right-3 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-zinc-300 pointer-events-none">
+                <span class="flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span>JECRC '26</span>
+                </span>
+                <span class="text-zinc-400 bg-black/60 px-2 py-0.5 rounded border border-white/10">8.3 CGPA</span>
+              </div>
+            </div>
+
+            <!-- Accent corner brackets -->
+            <div class="absolute -top-1.5 -left-1.5 w-3 h-3 border-t border-l border-zinc-500 group-hover:border-emerald-400 transition-colors duration-300 pointer-events-none"></div>
+            <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b border-r border-zinc-500 group-hover:border-emerald-400 transition-colors duration-300 pointer-events-none"></div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="py-3 border-y border-surface-border bg-surface-subtle/60 relative overflow-hidden">
+      <div class="marquee-container">
+        <!-- Track 1 -->
+        <div class="marquee-content">
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-code text-zinc-400"></i> C++
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-html5 text-orange-500"></i> HTML
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-css3-alt text-blue-500"></i> CSS
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-react text-cyan-400"></i> React.js
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-node-js text-emerald-400"></i> Node.js
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-bolt text-yellow-400"></i> Gemini API
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-js text-yellow-400"></i> JavaScript
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-t text-blue-400"></i> TypeScript
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-server text-zinc-400"></i> Express.js
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-leaf text-emerald-500"></i> MongoDB Atlas
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-puzzle-piece text-amber-400"></i> Chrome Extension MV3
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-database text-blue-400"></i> MySQL
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-layer-group text-purple-400"></i> Redux Toolkit
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-git-alt text-orange-400"></i> Git &amp; GitHub
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-wind text-cyan-400"></i> Tailwind CSS
+          </span>
+        </div>
+
+        <!-- Track 2 (Duplicate for Seamless Loop) -->
+        <div class="marquee-content" aria-hidden="true">
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-code text-zinc-400"></i> C++
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-html5 text-orange-500"></i> HTML
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-css3-alt text-blue-500"></i> CSS
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-react text-cyan-400"></i> React.js
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-node-js text-emerald-400"></i> Node.js
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-bolt text-yellow-400"></i> Gemini API
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-js text-yellow-400"></i> JavaScript
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-t text-blue-400"></i> TypeScript
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-server text-zinc-400"></i> Express.js
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-leaf text-emerald-500"></i> MongoDB Atlas
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-puzzle-piece text-amber-400"></i> Chrome Extension MV3
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-database text-blue-400"></i> MySQL
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-layer-group text-purple-400"></i> Redux Toolkit
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-brands fa-git-alt text-orange-400"></i> Git &amp; GitHub
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-card border border-surface-border text-xs font-mono text-zinc-300 whitespace-nowrap">
+            <i class="fa-solid fa-wind text-cyan-400"></i> Tailwind CSS
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="py-8 px-4 sm:px-6 max-w-5xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="mb-5 flex flex-col md:flex-row md:items-end justify-between gap-2 sm:gap-3 border-b border-surface-border pb-3 reveal-item">
+        <div>
+          <span class="font-mono text-xs text-zinc-500 uppercase tracking-widest block">01 / Engineering Portfolio</span>
+          <h2 class="font-sans text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">Projects</h2>
+        </div>
+        <p class="font-mono text-xs text-zinc-400 max-w-sm">
+          Full stack applications, browser extensions, and AI-integrated products.
+        </p>
+      </div>
+
+      <!-- Project Cards List -->
+      <div class="space-y-5">
+        
+        <!-- Project 1: CredWise -->
+        <article class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/70 hover:bg-surface-card hover:border-surface-borderHover transition-all duration-300 reveal-item group">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6 sm:gap-8">
+            
+            <div class="flex-1 space-y-3.5 sm:space-y-4">
+              <div class="flex items-center gap-2.5">
+                <span class="px-2.5 py-0.5 rounded bg-emerald-950/60 border border-emerald-800/40 text-emerald-400 font-mono text-[11px]">AI &amp; MERN</span>
+                <span class="text-zinc-600">&bull;</span>
+                <span class="font-mono text-xs text-zinc-400">Sep &rsquo;26</span>
+              </div>
+              
+              <h3 class="font-sans text-xl sm:text-2xl font-bold text-white group-hover:text-zinc-100 transition-colors">
+                CredWise &mdash; AI Credit Card Recommendation Platform
+              </h3>
+
+              <div class="space-y-2 text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                <p>
+                  &bull; Developed a MERN-based, AI-integrated personalized credit card recommendation platform that analyzes user spending preferences through an interactive questionnaire and identifies the best-matching credit card.
+                </p>
+                <p>
+                  &bull; Integrated the <strong>Gemini API</strong> to deliver personalized AI insights on card suitability, relevant benefits, optimal usage strategies, and potential drawbacks.
+                </p>
+                <p>
+                  &bull; Built and deployed a mobile-first React and Express.js application on Vercel and Render, integrating MongoDB Atlas and secure environment-based API configuration.
+                </p>
+              </div>
+
+              <!-- Tech Badges -->
+              <div class="flex flex-wrap gap-1.5 sm:gap-2 pt-1.5">
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">ReactJS</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">TypeScript</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">Tailwind CSS</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">Node.js</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">Express.js</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">MongoDB Atlas</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-amber-400">Gemini API</span>
+              </div>
+            </div>
+
+            <!-- Right Column: Action Buttons & Screenshot Box -->
+            <div class="w-full lg:w-72 xl:w-80 flex flex-col gap-3 flex-shrink-0">
+              <div class="grid grid-cols-2 gap-2">
+                <a href="https://github.com/ankitydv741/CredWise" target="_blank" rel="noopener noreferrer" class="interactive px-3 py-2.5 rounded-lg bg-surface-subtle border border-surface-border hover:border-zinc-400 text-zinc-300 hover:text-white font-mono text-xs active:scale-95 transition-all flex items-center justify-center gap-2">
+                  <i class="fa-brands fa-github text-sm"></i>
+                  <span>Code</span>
+                </a>
+                <a href="https://credwise-nine.vercel.app/" target="_blank" rel="noopener noreferrer" class="interactive px-3 py-2.5 rounded-lg bg-white text-black hover:bg-zinc-200 font-mono text-xs active:scale-95 transition-all flex items-center justify-center gap-2 font-medium">
+                  <span>Live Demo</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+              </div>
+
+              <!-- Screenshot Frame Box -->
+              <div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden border border-surface-border bg-surface-subtle group-hover:border-zinc-500/50 transition-all duration-300 shadow-md">
+                <div class="h-6 bg-zinc-900/90 border-b border-surface-border px-2.5 flex items-center justify-between">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>
+                  </div>
+                  <span class="font-mono text-[10px] text-zinc-500 truncate">credwise.app</span>
+                  <span class="w-3"></span>
+                </div>
+                <img 
+                  id="credwisePhoto"
+                  src="credwise.png" 
+                  alt="CredWise Platform Screenshot" 
+                  class="w-full h-full object-cover object-top opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=700&q=80';"
+                >
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- Project 2: QuickDocs -->
+        <article class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/70 hover:bg-surface-card hover:border-surface-borderHover transition-all duration-300 reveal-item group">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6 sm:gap-8">
+            
+            <div class="flex-1 space-y-3.5 sm:space-y-4">
+              <div class="flex items-center gap-2.5">
+                <span class="px-2.5 py-0.5 rounded bg-blue-950/60 border border-blue-800/40 text-blue-400 font-mono text-[11px]">Extension &bull; Local-First</span>
+                <span class="text-zinc-600">&bull;</span>
+                <span class="font-mono text-xs text-zinc-400">May &rsquo;26</span>
+              </div>
+              
+              <h3 class="font-sans text-xl sm:text-2xl font-bold text-white group-hover:text-zinc-100 transition-colors">
+                QuickDocs &mdash; Privacy First Smart Upload Assistant (Chrome Extension)
+              </h3>
+
+              <div class="space-y-2 text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                <p>
+                  &bull; Built a privacy-first Chrome Extension that detects file upload fields across websites and intelligently suggests relevant locally stored documents for one-click uploads.
+                </p>
+                <p>
+                  &bull; Designed an efficient workflow to detect file upload forms, recommend relevant documents through a floating popup UI, and enable one-click uploads.
+                </p>
+                <p>
+                  &bull; Ensured complete user privacy by eliminating sign-up and cloud storage requirements, with all documents stored securely and locally in Chrome using <strong>IndexedDB</strong>.
+                </p>
+              </div>
+
+              <!-- Tech Badges -->
+              <div class="flex flex-wrap gap-1.5 sm:gap-2 pt-1.5">
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">JavaScript (ES6+)</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">Chrome Extension MV3</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">IndexedDB</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">HTML5</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">CSS3</span>
+              </div>
+            </div>
+
+            <!-- Right Column: Action Buttons & Screenshot Box -->
+            <div class="w-full lg:w-72 xl:w-80 flex flex-col gap-3 flex-shrink-0">
+              <div class="grid grid-cols-2 gap-2">
+                <a href="https://github.com/ankitydv741/QuickDocs-" target="_blank" rel="noopener noreferrer" class="interactive px-3 py-2.5 rounded-lg bg-surface-subtle border border-surface-border hover:border-zinc-400 text-zinc-300 hover:text-white font-mono text-xs active:scale-95 transition-all flex items-center justify-center gap-2">
+                  <i class="fa-brands fa-github text-sm"></i>
+                  <span>Code</span>
+                </a>
+                <span class="px-3 py-2.5 rounded-lg bg-zinc-800/80 border border-surface-border text-zinc-400 font-mono text-xs flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-puzzle-piece text-[11px]"></i>
+                  <span>Chrome MV3</span>
+                </span>
+              </div>
+
+              <div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden border border-surface-border bg-surface-subtle group-hover:border-zinc-500/50 transition-all duration-300 shadow-md">
+                <div class="h-6 bg-zinc-900/90 border-b border-surface-border px-2.5 flex items-center justify-between">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>
+                  </div>
+                  <span class="font-mono text-[10px] text-zinc-500 truncate">quickdocs-extension</span>
+                  <span class="w-3"></span>
+                </div>
+                <img 
+                  id="quickdocsPhoto"
+                  src="quickdocs.png" 
+                  alt="QuickDocs Extension Screenshot" 
+                  class="w-full h-full object-cover object-top opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=700&q=80';"
+                >
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- Project 3: Frag.OS -->
+        <article class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/70 hover:bg-surface-card hover:border-surface-borderHover transition-all duration-300 reveal-item group">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6 sm:gap-8">
+            
+            <div class="flex-1 space-y-3.5 sm:space-y-4">
+              <div class="flex items-center gap-2.5">
+                <span class="px-2.5 py-0.5 rounded bg-amber-950/60 border border-amber-800/40 text-amber-400 font-mono text-[11px]">Full Stack Web</span>
+                <span class="text-zinc-600">&bull;</span>
+                <span class="font-mono text-xs text-zinc-400">Feb &rsquo;26</span>
+              </div>
+              
+              <h3 class="font-sans text-xl sm:text-2xl font-bold text-white group-hover:text-zinc-100 transition-colors">
+                Frag.OS &mdash; Personalized &amp; Fragrance Finder
+              </h3>
+
+              <div class="space-y-2 text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                <p>
+                  &bull; Developed a full-stack perfume finder website that solves the problem of selecting the right fragrance by recommending perfumes based on scent notes the user prefers, the occasion they want to wear it for, and the weather/season around them, along with age and gender.
+                </p>
+                <p>
+                  &bull; Built an interactive questionnaire and responsive UI to capture user preferences and deliver a simple, personalized perfume discovery experience.
+                </p>
+                <p>
+                  &bull; Built RESTful APIs using Node.js and Express.js to process user preferences, query <strong>MongoDB Atlas</strong> for relevant fragrances, and dynamically deliver personalized recommendations.
+                </p>
+              </div>
+
+              <!-- Tech Badges -->
+              <div class="flex flex-wrap gap-1.5 sm:gap-2 pt-1.5">
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">Node.js</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">Express.js</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">MongoDB Atlas</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">REST APIs</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">JavaScript</span>
+                <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] text-zinc-300">HTML &amp; CSS</span>
+              </div>
+            </div>
+
+            <!-- Right Column: Action Buttons & Screenshot Box -->
+            <div class="w-full lg:w-72 xl:w-80 flex flex-col gap-3 flex-shrink-0">
+              <div class="grid grid-cols-2 gap-2">
+                <a href="https://github.com/ankitydv741/PERFUME-FINDER-WEB-APP-" target="_blank" rel="noopener noreferrer" class="interactive px-3 py-2.5 rounded-lg bg-surface-subtle border border-surface-border hover:border-zinc-400 text-zinc-300 hover:text-white font-mono text-xs active:scale-95 transition-all flex items-center justify-center gap-2">
+                  <i class="fa-brands fa-github text-sm"></i>
+                  <span>Code</span>
+                </a>
+                <a href="https://perfume-finder-web-app.vercel.app/" target="_blank" rel="noopener noreferrer" class="interactive px-3 py-2.5 rounded-lg bg-white text-black hover:bg-zinc-200 font-mono text-xs active:scale-95 transition-all flex items-center justify-center gap-2 font-medium">
+                  <span>Live Demo</span>
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+              </div>
+
+              <div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden border border-surface-border bg-surface-subtle group-hover:border-zinc-500/50 transition-all duration-300 shadow-md">
+                <div class="h-6 bg-zinc-900/90 border-b border-surface-border px-2.5 flex items-center justify-between">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>
+                  </div>
+                  <span class="font-mono text-[10px] text-zinc-500 truncate">frag-os.dev</span>
+                  <span class="w-3"></span>
+                </div>
+                <img 
+                  id="fragosPhoto"
+                  src="fragos.png" 
+                  alt="Frag.OS Platform Screenshot" 
+                  class="w-full h-full object-cover object-top opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=700&q=80';"
+                >
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="skills" class="py-8 px-4 sm:px-6 border-t border-surface-border bg-surface-subtle/30">
+      <div class="max-w-5xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="mb-5 flex flex-col md:flex-row md:items-end justify-between gap-2 sm:gap-3 border-b border-surface-border pb-3 reveal-item">
+          <div>
+            <span class="font-mono text-xs text-zinc-500 uppercase tracking-widest block">02 / Technical Skills</span>
+            <h2 class="font-sans text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">Skills &amp; Technologies</h2>
+          </div>
+          <p class="font-mono text-xs text-zinc-400 max-w-sm">
+            Core programming languages, frameworks, databases, tools, and computer science fundamentals.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+
+          <!-- Card 1: Programming Languages -->
+          <div class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/80 hover:border-surface-borderHover transition-all duration-300 reveal-item space-y-3.5 sm:space-y-4">
+            <div class="flex items-center gap-3 pb-3 border-b border-surface-border">
+              <span class="w-8 h-8 rounded-lg bg-zinc-800 text-amber-400 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-code"></i>
+              </span>
+              <h3 class="font-sans font-bold text-base text-white">Languages</h3>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-1">
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-code text-zinc-400"></i> C++
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-brands fa-js text-yellow-400"></i> JavaScript
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-t text-blue-400"></i> TypeScript
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-database text-blue-400"></i> SQL
+              </span>
+            </div>
+          </div>
+
+          <!-- Card 2: Frontend Engineering -->
+          <div class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/80 hover:border-surface-borderHover transition-all duration-300 reveal-item space-y-3.5 sm:space-y-4">
+            <div class="flex items-center gap-3 pb-3 border-b border-surface-border">
+              <span class="w-8 h-8 rounded-lg bg-zinc-800 text-cyan-400 flex items-center justify-center text-sm">
+                <i class="fa-brands fa-react"></i>
+              </span>
+              <h3 class="font-sans font-bold text-base text-white">Frontend</h3>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-1">
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-brands fa-react text-cyan-400"></i> React.js
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-layer-group text-purple-400"></i> Redux Toolkit
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-bolt text-yellow-400"></i> Vite
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-wind text-cyan-400"></i> Tailwind CSS
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-brands fa-bootstrap text-purple-400"></i> Bootstrap
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-brands fa-html5 text-orange-500"></i> HTML
+              </span>
+            </div>
+          </div>
+
+          <!-- Card 3: Backend & Databases -->
+          <div class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/80 hover:border-surface-borderHover transition-all duration-300 reveal-item space-y-3.5 sm:space-y-4">
+            <div class="flex items-center gap-3 pb-3 border-b border-surface-border">
+              <span class="w-8 h-8 rounded-lg bg-zinc-800 text-emerald-400 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-server"></i>
+              </span>
+              <h3 class="font-sans font-bold text-base text-white">Backend &amp; Databases</h3>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-1">
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-brands fa-node-js text-emerald-400"></i> Node.js
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-server text-zinc-400"></i> Express.js
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-network-wired text-blue-400"></i> REST APIs
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-database text-blue-400"></i> MySQL
+              </span>
+              <span class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-200 flex items-center gap-2 hover:border-zinc-500 transition-colors">
+                <i class="fa-solid fa-leaf text-emerald-500"></i> MongoDB Atlas
+              </span>
+            </div>
+          </div>
+
+          <!-- Card 4: Tools & Core CS Concepts -->
+          <div class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/80 hover:border-surface-borderHover transition-all duration-300 reveal-item space-y-3.5 sm:space-y-4">
+            <div class="flex items-center gap-3 pb-3 border-b border-surface-border">
+              <span class="w-8 h-8 rounded-lg bg-zinc-800 text-purple-400 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-cubes"></i>
+              </span>
+              <h3 class="font-sans font-bold text-base text-white">Tools &amp; Core CS</h3>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <div>
+                <span class="font-mono text-[11px] text-zinc-500 uppercase tracking-wider block mb-2">Tools:</span>
+                <div class="flex flex-wrap gap-2">
+                  <span class="px-2.5 py-1.5 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-300 flex items-center gap-1.5 hover:border-zinc-500 transition-colors">
+                    <i class="fa-brands fa-git-alt text-orange-400"></i> Git
+                  </span>
+                  <span class="px-2.5 py-1.5 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-300 flex items-center gap-1.5 hover:border-zinc-500 transition-colors">
+                    <i class="fa-brands fa-github text-white"></i> GitHub
+                  </span>
+                  <span class="px-2.5 py-1.5 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-300 hover:border-zinc-500 transition-colors">
+                    VS Code
+                  </span>
+                  <span class="px-2.5 py-1.5 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-300 hover:border-zinc-500 transition-colors">
+                    MongoDB Compass
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <span class="font-mono text-[11px] text-zinc-500 uppercase tracking-wider block mb-2">Core CS Concepts:</span>
+                <div class="flex flex-wrap gap-2">
+                  <span class="px-2.5 py-1.5 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-300 hover:border-zinc-500 transition-colors">
+                    OOP
+                  </span>
+                  <span class="px-2.5 py-1.5 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-300 hover:border-zinc-500 transition-colors">
+                    DBMS
+                  </span>
+                  <span class="px-2.5 py-1.5 rounded-lg bg-surface-subtle border border-surface-border font-mono text-xs text-zinc-300 hover:border-zinc-500 transition-colors">
+                    Software Engineering
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Soft Skills Banner -->
+        <div class="mt-4 p-3.5 sm:p-4 rounded-xl border border-surface-border bg-surface-card/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 reveal-item">
+          <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="font-mono text-[11px] sm:text-xs text-zinc-200 tracking-wider font-semibold uppercase">Professional Strengths &amp; Work Philosophy</span>
+          </div>
+          <div class="flex flex-wrap gap-2 font-mono text-xs text-zinc-300">
+            <span class="px-2.5 py-1 rounded bg-zinc-800/80 border border-surface-border flex items-center gap-1.5">
+              <i class="fa-solid fa-scale-balanced text-emerald-400"></i> Level-headed
+            </span>
+            <span class="px-2.5 py-1 rounded bg-zinc-800/80 border border-surface-border flex items-center gap-1.5">
+              <i class="fa-solid fa-clock text-amber-400"></i> Time-Oriented
+            </span>
+            <span class="px-2.5 py-1 rounded bg-zinc-800/80 border border-surface-border flex items-center gap-1.5">
+              <i class="fa-solid fa-users text-blue-400"></i> Teamwork
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="education" class="py-8 px-4 sm:px-6 border-t border-surface-border max-w-5xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="mb-5 border-b border-surface-border pb-3 reveal-item">
+        <span class="font-mono text-xs text-zinc-500 uppercase tracking-widest block">03 / Academic Records</span>
+        <h2 class="font-sans text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">Education</h2>
+      </div>
+
+      <!-- Education Cards -->
+      <div class="space-y-3.5">
+        
+        <!-- College: JECRC Foundation -->
+        <div class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/70 reveal-item">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-2">
+            <div>
+              <span class="font-mono text-xs text-amber-500 font-semibold tracking-wide">2022 &ndash; 2026</span>
+              <h3 class="font-sans text-lg sm:text-2xl font-bold text-white mt-0.5 sm:mt-1">
+                Bachelor of Technology &mdash; Information Technology
+              </h3>
+              <p class="text-zinc-400 text-xs sm:text-sm mt-0.5">JECRC Foundation, Jaipur (Rajasthan)</p>
+            </div>
+            <div class="font-mono text-xs text-emerald-400 sm:text-right bg-emerald-950/40 border border-emerald-800/50 px-3 py-1 rounded-md self-start sm:self-auto mt-1 sm:mt-0">
+              <span>8.3 CGPA</span>
+            </div>
+          </div>
+
+          <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed mt-3 mb-3">
+            Undergraduate program emphasizing data structures, relational and document databases, modern software engineering methodologies, web application engineering, and object-oriented principles.
+          </p>
+
+          <div class="pt-3 border-t border-surface-border">
+            <span class="font-mono text-[11px] sm:text-xs text-zinc-500 uppercase tracking-wider block mb-2">Key Coursework:</span>
+            <div class="flex flex-wrap gap-1.5 sm:gap-2">
+              <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] sm:text-xs text-zinc-300">Object Oriented Programming (OOP)</span>
+              <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] sm:text-xs text-zinc-300">Database Management Systems (DBMS)</span>
+              <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] sm:text-xs text-zinc-300">Software Engineering</span>
+              <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] sm:text-xs text-zinc-300">Data Structures in C++</span>
+              <span class="px-2.5 py-1 rounded bg-surface-subtle border border-surface-border font-mono text-[11px] sm:text-xs text-zinc-300">Computer Networks</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Class XII: Dalmia Vidya Mandir -->
+        <div class="p-5 sm:p-6 rounded-xl border border-surface-border bg-surface-card/40 reveal-item">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+            <div>
+              <span class="font-mono text-xs text-zinc-500 font-semibold tracking-wide">Graduated 2022</span>
+              <div class="flex flex-wrap items-center gap-2 mt-0.5">
+                <h4 class="font-sans text-base sm:text-xl font-bold text-white">
+                  Senior Secondary Education (Class XII)
+                </h4>
+                <span class="px-2 py-0.5 rounded bg-zinc-800 border border-surface-border font-mono text-[11px] sm:text-xs text-amber-400 font-medium">
+                  Science (PCM)
+                </span>
+              </div>
+              <p class="text-zinc-400 text-xs sm:text-sm mt-0.5">Dalmia Vidya Mandir, Chirawa (Rajasthan) &bull; Physics, Chemistry, Mathematics</p>
+            </div>
+            <div class="font-mono text-xs text-emerald-400 sm:text-right bg-emerald-950/30 border border-emerald-900/50 px-3 py-1 rounded-md self-start sm:self-auto mt-1 sm:mt-0">
+              <span>75.40%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Class X: Dalmia Vidya Mandir -->
+        <div class="p-5 sm:p-6 rounded-xl border border-surface-border bg-surface-card/40 reveal-item">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+            <div>
+              <span class="font-mono text-xs text-zinc-500 font-semibold tracking-wide">Graduated 2020</span>
+              <h4 class="font-sans text-base sm:text-xl font-bold text-white mt-0.5">
+                Secondary Education (Class X)
+              </h4>
+              <p class="text-zinc-400 text-xs sm:text-sm mt-0.5">Dalmia Vidya Mandir, Chirawa (Rajasthan)</p>
+            </div>
+            <div class="font-mono text-xs text-emerald-400 sm:text-right bg-emerald-950/30 border border-emerald-900/50 px-3 py-1 rounded-md self-start sm:self-auto mt-1 sm:mt-0">
+              <span>91.2%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="achievements" class="py-8 px-4 sm:px-6 border-t border-surface-border bg-surface-subtle/30">
+      <div class="max-w-5xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="mb-5 border-b border-surface-border pb-3 reveal-item">
+          <span class="font-mono text-xs text-zinc-500 uppercase tracking-widest block">04 / Recognition &amp; Leadership</span>
+          <h2 class="font-sans text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">Achievements</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- Achievement 1: IEEE YESIST12 -->
+          <div class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/70 hover:border-surface-borderHover transition-all duration-300 reveal-item space-y-2.5 sm:space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded bg-amber-950/50 border border-amber-800/40 text-amber-400 font-mono text-[11px] sm:text-xs flex items-center gap-1.5">
+                <i class="fa-solid fa-trophy"></i> Top 15 Globally
+              </span>
+              <span class="font-mono text-[11px] sm:text-xs text-zinc-500">May &rsquo;2024</span>
+            </div>
+
+            <h3 class="font-sans text-base sm:text-xl font-bold text-white">
+              IEEE YESIST12 International Hackathon
+            </h3>
+
+            <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed">
+              Selected among the <strong>Top 15 teams globally</strong> in an international tech innovation hackathon, recognized for delivering innovative software solutions, rigorous problem analysis, and technical execution.
+            </p>
+          </div>
+
+          <!-- Achievement 2: JIC Shark Tank Season 3 -->
+          <div class="p-5 sm:p-7 rounded-xl border border-surface-border bg-surface-card/70 hover:border-surface-borderHover transition-all duration-300 reveal-item space-y-2.5 sm:space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded bg-blue-950/50 border border-blue-800/40 text-blue-400 font-mono text-[11px] sm:text-xs flex items-center gap-1.5">
+                <i class="fa-solid fa-bullhorn"></i> Campaign Team
+              </span>
+              <span class="font-mono text-[11px] sm:text-xs text-zinc-500">Feb &rsquo;24 &ndash; Apr &rsquo;24</span>
+            </div>
+
+            <h3 class="font-sans text-base sm:text-xl font-bold text-white">
+              JIC Shark Tank Season 3
+            </h3>
+
+            <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed">
+              Contributed to the <strong>JECRC Incubation Cell Shark Tank Season 3</strong> social media campaign on Instagram and LinkedIn, enhancing engagement, increasing visibility, and raising awareness of startup pitches and entrepreneurship.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="hobbies" class="py-8 px-4 sm:px-6 border-t border-surface-border">
+      <div class="max-w-5xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="mb-5 border-b border-surface-border pb-3 reveal-item">
+          <span class="font-mono text-xs text-zinc-500 uppercase tracking-widest block">05 / Beyond Engineering</span>
+          <h2 class="font-sans text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">Hobbies &amp; Interests</h2>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          
+          <!-- Hobby 1: Badminton -->
+          <div class="p-4 sm:p-5 rounded-xl border border-surface-border bg-surface-card/70 hover:bg-surface-card hover:border-surface-borderHover transition-all duration-300 reveal-item group">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-zinc-800 text-emerald-400 flex items-center justify-center text-base sm:text-lg mb-2.5 sm:mb-3 group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-medal"></i>
+            </div>
+            <h3 class="font-sans font-bold text-sm sm:text-base text-white">Badminton</h3>
+            <p class="text-zinc-400 text-[11px] sm:text-xs mt-1 leading-relaxed">Quick reflexes, stamina, and court strategy.</p>
+          </div>
+
+          <!-- Hobby 2: Running -->
+          <div class="p-4 sm:p-5 rounded-xl border border-surface-border bg-surface-card/70 hover:bg-surface-card hover:border-surface-borderHover transition-all duration-300 reveal-item group">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-zinc-800 text-amber-400 flex items-center justify-center text-base sm:text-lg mb-2.5 sm:mb-3 group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-person-running"></i>
+            </div>
+            <h3 class="font-sans font-bold text-sm sm:text-base text-white">Running</h3>
+            <p class="text-zinc-400 text-[11px] sm:text-xs mt-1 leading-relaxed">Daily endurance training and mental clarity.</p>
+          </div>
+
+          <!-- Hobby 3: Gardening -->
+          <div class="p-4 sm:p-5 rounded-xl border border-surface-border bg-surface-card/70 hover:bg-surface-card hover:border-surface-borderHover transition-all duration-300 reveal-item group">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-zinc-800 text-green-400 flex items-center justify-center text-base sm:text-lg mb-2.5 sm:mb-3 group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-seedling"></i>
+            </div>
+            <h3 class="font-sans font-bold text-sm sm:text-base text-white">Gardening</h3>
+            <p class="text-zinc-400 text-[11px] sm:text-xs mt-1 leading-relaxed">Patience and mindful outdoor care.</p>
+          </div>
+
+          <!-- Hobby 4: Listening to Music -->
+          <div class="p-4 sm:p-5 rounded-xl border border-surface-border bg-surface-card/70 hover:bg-surface-card hover:border-surface-borderHover transition-all duration-300 reveal-item group">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-zinc-800 text-cyan-400 flex items-center justify-center text-base sm:text-lg mb-2.5 sm:mb-3 group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-headphones"></i>
+            </div>
+            <h3 class="font-sans font-bold text-sm sm:text-base text-white">Music</h3>
+            <p class="text-zinc-400 text-[11px] sm:text-xs mt-1 leading-relaxed">Good tunes to relax and refresh the mind.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="socials" class="py-8 px-4 sm:px-6 border-t border-surface-border bg-surface-subtle/40">
+      <div class="max-w-5xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="mb-5 flex flex-col md:flex-row md:items-end justify-between gap-2 sm:gap-3 border-b border-surface-border pb-3 reveal-item">
+          <div>
+            <span class="font-mono text-xs text-zinc-500 uppercase tracking-widest block">06 / Digital Footprint</span>
+            <h2 class="font-sans text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">Connect Online</h2>
+          </div>
+          <p class="font-mono text-xs text-zinc-400 max-w-sm">
+            Reach out and connect across platforms, channels, and developer networks.
+          </p>
+        </div>
+
+        <!-- Social Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4 pt-1">
+          
+          <!-- 1. X (formerly Twitter) -->
+          <a 
+            href="https://x.com/ankit_ydv741?s=11" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="X Profile"
+            class="interactive reveal-item flex flex-col items-center justify-center p-4 rounded-xl border border-surface-border bg-surface-card/80 hover:bg-surface-card hover:border-zinc-400 hover:-translate-y-1 active:scale-95 transition-all duration-300 group shadow-sm text-center min-h-[96px]"
+          >
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-300 group-hover:text-white group-hover:border-zinc-500 transition-all mb-2">
+              <i class="fa-brands fa-x-twitter text-base"></i>
+            </div>
+            <span class="font-sans font-semibold text-xs text-zinc-300 group-hover:text-white transition-colors">X</span>
+            <span class="font-mono text-[10px] text-zinc-500 mt-0.5">@ankit_ydv741</span>
+          </a>
+
+          <!-- 2. Facebook -->
+          <a 
+            href="https://www.facebook.com/share/1BntqoJDnK/?mibextid=wwXIfr" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="Facebook Profile"
+            class="interactive reveal-item flex flex-col items-center justify-center p-4 rounded-xl border border-surface-border bg-surface-card/80 hover:bg-surface-card hover:border-blue-500/60 hover:-translate-y-1 active:scale-95 transition-all duration-300 group shadow-sm text-center min-h-[96px]"
+          >
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-300 group-hover:text-blue-400 group-hover:border-blue-500/40 transition-all mb-2">
+              <i class="fa-brands fa-facebook-f text-base"></i>
+            </div>
+            <span class="font-sans font-semibold text-xs text-zinc-300 group-hover:text-white transition-colors">Facebook</span>
+            <span class="font-mono text-[10px] text-zinc-500 mt-0.5">ankit.yadav</span>
+          </a>
+
+          <!-- 3. Instagram -->
+          <a 
+            href="https://www.instagram.com/your_ydvankitt?igsh=bWJ0YjR5dWozdGw1&utm_source=qr" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="Instagram Profile"
+            class="interactive reveal-item flex flex-col items-center justify-center p-4 rounded-xl border border-surface-border bg-surface-card/80 hover:bg-surface-card hover:border-pink-500/60 hover:-translate-y-1 active:scale-95 transition-all duration-300 group shadow-sm text-center min-h-[96px]"
+          >
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-300 group-hover:text-pink-400 group-hover:border-pink-500/40 transition-all mb-2">
+              <i class="fa-brands fa-instagram text-base"></i>
+            </div>
+            <span class="font-sans font-semibold text-xs text-zinc-300 group-hover:text-white transition-colors">Instagram</span>
+            <span class="font-mono text-[10px] text-zinc-500 mt-0.5">@your_ydvankitt</span>
+          </a>
+
+          <!-- 4. YouTube -->
+          <a 
+            href="https://youtube.com/@ankitt_editx?si=SgD1CXhv9syDmlY3" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="YouTube Channel"
+            class="interactive reveal-item flex flex-col items-center justify-center p-4 rounded-xl border border-surface-border bg-surface-card/80 hover:bg-surface-card hover:border-red-500/60 hover:-translate-y-1 active:scale-95 transition-all duration-300 group shadow-sm text-center min-h-[96px]"
+          >
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-300 group-hover:text-red-400 group-hover:border-red-500/40 transition-all mb-2">
+              <i class="fa-brands fa-youtube text-base"></i>
+            </div>
+            <span class="font-sans font-semibold text-xs text-zinc-300 group-hover:text-white transition-colors">YouTube</span>
+            <span class="font-mono text-[10px] text-zinc-500 mt-0.5">@ankitt_editx</span>
+          </a>
+
+          <!-- 5. GitHub -->
+          <a 
+            href="https://github.com/ankitydv741" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="GitHub Profile"
+            class="interactive reveal-item flex flex-col items-center justify-center p-4 rounded-xl border border-surface-border bg-surface-card/80 hover:bg-surface-card hover:border-emerald-400 hover:-translate-y-1 active:scale-95 transition-all duration-300 group shadow-sm text-center min-h-[96px]"
+          >
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-300 group-hover:text-emerald-400 group-hover:border-emerald-400/40 transition-all mb-2">
+              <i class="fa-brands fa-github text-base"></i>
+            </div>
+            <span class="font-sans font-semibold text-xs text-zinc-300 group-hover:text-white transition-colors">GitHub</span>
+            <span class="font-mono text-[10px] text-zinc-500 mt-0.5">@ankitydv741</span>
+          </a>
+
+          <!-- 6. LinkedIn -->
+          <a 
+            href="https://www.linkedin.com/in/ankityadav664/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="LinkedIn Profile"
+            class="interactive reveal-item flex flex-col items-center justify-center p-4 rounded-xl border border-surface-border bg-surface-card/80 hover:bg-surface-card hover:border-blue-400 hover:-translate-y-1 active:scale-95 transition-all duration-300 group shadow-sm text-center min-h-[96px]"
+          >
+            <div class="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-300 group-hover:text-blue-400 group-hover:border-blue-400/40 transition-all mb-2">
+              <i class="fa-brands fa-linkedin-in text-base"></i>
+            </div>
+            <span class="font-sans font-semibold text-xs text-zinc-300 group-hover:text-white transition-colors">LinkedIn</span>
+            <span class="font-mono text-[10px] text-zinc-500 mt-0.5">ankityadav664</span>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section id="contact" class="py-8 px-4 sm:px-6 border-t border-surface-border bg-surface-subtle/30">
+      <div class="max-w-3xl mx-auto">
+        
+        <div class="text-center mb-5 reveal-item">
+          <span class="font-mono text-xs text-zinc-500 uppercase tracking-widest block mb-1">07 / Direct Contact</span>
+          <h2 class="font-sans text-2xl sm:text-3xl font-bold text-white tracking-tight">Let&rsquo;s Build Together</h2>
+          <p class="text-zinc-400 text-xs sm:text-sm mt-1.5 max-w-md mx-auto">
+            Available for software developer positions, technical internships, and collaborative development. Reach me directly or leave a note below.
+          </p>
+
+          <div class="mt-4 flex flex-wrap justify-center gap-2 sm:gap-2.5 text-xs font-mono">
+            <a href="mailto:ankityadav06062004@gmail.com" class="interactive px-3 py-2 rounded-lg bg-surface-card border border-surface-border hover:border-zinc-400 text-zinc-300 hover:text-white active:scale-95 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-envelope text-amber-500"></i>
+              <span class="truncate max-w-[190px] xs:max-w-none">ankityadav06062004@gmail.com</span>
+            </a>
+            <a href="tel:+916367502730" class="interactive px-3 py-2 rounded-lg bg-surface-card border border-surface-border hover:border-zinc-400 text-zinc-300 hover:text-white active:scale-95 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-phone text-emerald-400"></i>
+              <span>+91 6367502730</span>
+            </a>
+            <span class="px-3 py-2 rounded-lg bg-surface-card border border-surface-border text-zinc-400 flex items-center gap-2">
+              <i class="fa-solid fa-location-dot text-rose-400"></i>
+              <span>Jaipur (Rajasthan)</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="p-5 sm:p-7 rounded-2xl border border-surface-border bg-surface-card shadow-xl relative reveal-item">
+          
+          <form id="portfolioContactForm" action="https://formspree.io/f/xljdboge" method="POST" class="space-y-4 sm:space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              <div>
+                <label for="userName" class="block font-mono text-xs text-zinc-400 uppercase mb-2">Your Name</label>
+                <input 
+                  type="text" 
+                  name="name"
+                  id="userName" 
+                  required 
+                  placeholder="e.g. Recruiter / Engineering Manager"
+                  class="w-full px-4 py-3 rounded-lg bg-surface-subtle border border-surface-border text-base sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-400 transition-colors"
+                >
+              </div>
+
+              <div>
+                <label for="userEmail" class="block font-mono text-xs text-zinc-400 uppercase mb-2">Email Address</label>
+                <input 
+                  type="email" 
+                  name="email"
+                  id="userEmail" 
+                  required 
+                  placeholder="name@company.com"
+                  class="w-full px-4 py-3 rounded-lg bg-surface-subtle border border-surface-border text-base sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-400 transition-colors"
+                >
+              </div>
+            </div>
+
+            <div>
+              <label for="userMessage" class="block font-mono text-xs text-zinc-400 uppercase mb-2">Message</label>
+              <textarea 
+                name="message"
+                id="userMessage" 
+                rows="4" 
+                required 
+                placeholder="Let me know about opportunities, project requirements, or questions..."
+                class="w-full px-4 py-3 rounded-lg bg-surface-subtle border border-surface-border text-base sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-400 transition-colors resize-none"
+              ></textarea>
+            </div>
+
+            <button 
+              type="submit" 
+              id="submitBtn"
+              class="interactive w-full py-3.5 rounded-lg bg-white text-black font-medium text-sm sm:text-xs hover:bg-zinc-200 active:scale-[0.99] transition-all flex items-center justify-center gap-2 shadow-sm min-h-[46px]"
+            >
+              <span>Send Message</span>
+              <i class="fa-solid fa-paper-plane text-[11px]"></i>
+            </button>
+          </form>
+
+          <!-- Toast Message Notification -->
+          <div id="formSuccessToast" class="hidden absolute inset-0 bg-surface-card/95 rounded-2xl backdrop-blur flex flex-col items-center justify-center text-center p-6 transition-opacity duration-300">
+            <span class="w-12 h-12 rounded-full bg-zinc-800 text-emerald-400 flex items-center justify-center text-xl mb-3">
+              <i class="fa-solid fa-check"></i>
+            </span>
+            <h4 class="font-sans text-xl font-bold text-white">Message Received</h4>
+            <p class="text-zinc-400 text-xs mt-1 max-w-xs">Thank you for reaching out, Ankit will get back to you shortly.</p>
+            <button id="resetFormBtn" class="mt-4 px-4 py-2 rounded-md border border-surface-border hover:border-zinc-400 active:scale-95 font-mono text-xs text-zinc-300">
+              Send another message
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-6 px-4 sm:px-6 border-t border-surface-border text-zinc-500 font-mono text-xs">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div>
+        <span>&copy; 2026 Ankit Yadav</span>
+      </div>
+
+      <div class="flex items-center gap-4 sm:gap-5">
+        <button id="quickCopyEmail" class="interactive hover:text-white active:scale-95 transition-colors py-1">
+          Copy Email
+        </button>
+        <button id="quickShareBtn" class="interactive hover:text-emerald-400 active:scale-95 transition-colors py-1 flex items-center gap-1.5">
+          <i class="fa-solid fa-share-nodes text-[11px]"></i>
+          <span>Share</span>
+        </button>
+        <a href="https://github.com/ankitydv741" target="_blank" rel="noopener noreferrer" class="interactive hover:text-white active:scale-95 transition-colors py-1">GitHub</a>
+        <a href="https://www.linkedin.com/in/ankityadav664/" target="_blank" rel="noopener noreferrer" class="interactive hover:text-white active:scale-95 transition-colors py-1">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // 1. Mobile Menu Drawer Toggle
+      const mobileToggleBtn = document.getElementById('mobileMenuToggle');
+      const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+      const menuIcon = document.getElementById('menuIcon');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+      if (mobileToggleBtn && mobileNavDrawer) {
+        mobileToggleBtn.addEventListener('click', () => {
+          const isOpen = !mobileNavDrawer.classList.contains('hidden');
+          if (isOpen) {
+            mobileNavDrawer.classList.add('hidden');
+            menuIcon.classList.remove('fa-xmark');
+            menuIcon.classList.add('fa-bars');
+          } else {
+            mobileNavDrawer.classList.remove('hidden');
+            menuIcon.classList.remove('fa-bars');
+            menuIcon.classList.add('fa-xmark');
+          }
+        });
+
+        // Close drawer automatically when any navigation link is clicked
+        mobileNavLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileNavDrawer.classList.add('hidden');
+            menuIcon.classList.remove('fa-xmark');
+            menuIcon.classList.add('fa-bars');
+          });
+        });
+      }
+
+      // 2. Subtle Trailing Cursor (Desktop only)
+      const cursor = document.getElementById('cursor');
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let curX = mouseX;
+      let curY = mouseY;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function renderCursor() {
+        curX += (mouseX - curX) * 0.22;
+        curY += (mouseY - curY) * 0.22;
+        if (cursor) {
+          cursor.style.left = curX + 'px';
+          cursor.style.top = curY + 'px';
+        }
+        requestAnimationFrame(renderCursor);
+      }
+      renderCursor();
+
+      document.querySelectorAll('.interactive, a, button, input, textarea').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+
+      // 3. Hero Stagger Entrance Animation (GSAP)
+      gsap.from('.hero-stagger', {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.08,
+        ease: "power2.out"
+      });
+
+      // 4. Scroll Reveal for Sections (ScrollTrigger)
+      gsap.utils.toArray('.reveal-item').forEach(elem => {
+        gsap.from(elem, {
+          scrollTrigger: {
+            trigger: elem,
+            start: "top 90%",
+          },
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.out"
+        });
+      });
+
+      // 5. "Get in Touch" Smooth Scroll & Auto-Focus
+      const getInTouchBtn = document.getElementById('getInTouchBtn');
+      if (getInTouchBtn) {
+        getInTouchBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const contactSection = document.getElementById('contact');
+          const nameInput = document.getElementById('userName');
+          if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+          }
+          if (nameInput) {
+            setTimeout(() => {
+              nameInput.focus();
+            }, 600);
+          }
+        });
+      }
+
+      // 6. Contact Form Handling (AJAX)
+      const form = document.getElementById('portfolioContactForm');
+      const toast = document.getElementById('formSuccessToast');
+      const resetBtn = document.getElementById('resetFormBtn');
+      const submitBtn = document.getElementById('submitBtn');
+
+      const formspreeEndpoint = "https://formspree.io/f/xljdboge";
+
+      if (form && toast) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Sending...</span> <i class="fa-solid fa-spinner fa-spin text-[11px]"></i>';
+          }
+
+          try {
+            const response = await fetch(formspreeEndpoint, {
+              method: 'POST',
+              body: new FormData(form),
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+
+            if (response.ok) {
+              toast.classList.remove('hidden');
+              form.reset();
+            } else {
+              const data = await response.json();
+              const errorMsg = data?.errors?.map((err) => err.message).join(', ') || 'Could not send message.';
+              const nameVal = document.getElementById('userName')?.value || '';
+              const msgVal = document.getElementById('userMessage')?.value || '';
+              window.location.href = `mailto:ankityadav06062004@gmail.com?subject=Portfolio%20Contact%20(${encodeURIComponent(nameVal)})&body=${encodeURIComponent(msgVal)}`;
+            }
+          } catch (error) {
+            const nameVal = document.getElementById('userName')?.value || '';
+            const msgVal = document.getElementById('userMessage')?.value || '';
+            window.location.href = `mailto:ankityadav06062004@gmail.com?subject=Portfolio%20Contact%20(${encodeURIComponent(nameVal)})&body=${encodeURIComponent(msgVal)}`;
+          } finally {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalBtnHTML;
+            }
+          }
+        });
+      }
+
+      if (resetBtn && toast) {
+        resetBtn.addEventListener('click', () => {
+          toast.classList.add('hidden');
+        });
+      }
+
+      // 7. Quick Copy Email Function
+      const copyBtn = document.getElementById('quickCopyEmail');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+          const email = "ankityadav06062004@gmail.com";
+          const tempInput = document.createElement('input');
+          tempInput.value = email;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
+
+          const originalText = copyBtn.innerText;
+          copyBtn.innerText = "Email Copied!";
+          setTimeout(() => {
+            copyBtn.innerText = originalText;
+          }, 2000);
+        });
+      }
+
+      // 8. Quick Share Button (Web Share API with clipboard fallback)
+      const shareBtn = document.getElementById('quickShareBtn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+          const shareData = {
+            title: 'Ankit Yadav — Software Developer',
+            text: 'Check out Ankit Yadav\'s Software Engineering & MERN Portfolio',
+            url: window.location.href
+          };
+          if (navigator.share) {
+            try {
+              await navigator.share(shareData);
+            } catch (err) {
+              // User cancelled share
+            }
+          } else {
+            const tempInput = document.createElement('input');
+            tempInput.value = window.location.href;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const origHtml = shareBtn.innerHTML;
+            shareBtn.innerHTML = '<i class="fa-solid fa-check text-[11px]"></i> <span>Link Copied!</span>';
+            setTimeout(() => {
+              shareBtn.innerHTML = origHtml;
+            }, 2000);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
